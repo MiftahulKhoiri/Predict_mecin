@@ -45,7 +45,7 @@ X_raw, y_raw = [], []
 for i in range(len(raw_data) - SEQ_LEN):
     seq_input = raw_data[i : i + SEQ_LEN]  # shape: (2, 3)
     target = raw_data[i + SEQ_LEN]         # shape: (3,)
-    
+
     X_raw.append(to_one_hot(seq_input).reshape(-1))
     y_raw.append(to_one_hot(target))
 
@@ -108,9 +108,11 @@ if not skip_training:
             y_batch = y_tensor[i : i + BATCH_SIZE].reshape(-1, 3, NUM_CLASSES)
 
             logits = model(x_batch).reshape(-1, 3, NUM_CLASSES)
-            
-            probs = logits.softmax(axis=2)
-            loss = -(y_batch * probs.log()).sum(axis=2).mean()
+
+            # Pakai log_softmax langsung (lebih stabil secara numerik
+            # daripada softmax().log(), menghindari log(0) -> NaN)
+            log_probs = logits.log_softmax(axis=2)
+            loss = -(y_batch * log_probs).sum(axis=2).mean()
 
             optimizer.zero_grad()
             loss.backward()
@@ -153,7 +155,7 @@ for idx in range(3):
     probs = pred_probs[idx]
     predicted_digit = np.argmax(probs) + 1  # Kembalikan ke rentang 1-6
     predicted_numbers.append(predicted_digit)
-    
+
     print(f"Posisi Angka ke-{idx+1}:")
     for digit in range(1, 7):
         print(f"  - Angka {digit}: {probs[digit-1]*100:.2f}%")
