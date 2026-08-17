@@ -4,9 +4,8 @@ import numpy as np
 from collections import Counter
 
 # Set variabel lingkungan sebelum meng-import tinygrad
-# Memaksa tinygrad menggunakan CPU/Python tanpa memerlukan compiler clang
-os.environ["CPU"] = "1"
-os.environ["CLANG"] = "0"
+# Menggunakan DEV=CPU sesuai dengan standar API tinygrad terbaru
+os.environ["DEV"] = "CPU"
 
 from tinygrad.tensor import Tensor
 from tinygrad.nn.optim import Adam
