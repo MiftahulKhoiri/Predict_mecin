@@ -116,7 +116,7 @@ if not skip_training:
             loss.backward()
             optimizer.step()
 
-        if (epoch + 1) % 20 == 0:
+        if (epoch + 1) % 1 == 0:
             print(f"Epoch {epoch+1}/{EPOCHS} - Loss: {loss.numpy():.4f}")
 
     # SIMPAN BOBOT MODEL (SAVE WEIGHTS)
