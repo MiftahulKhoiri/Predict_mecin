@@ -2,6 +2,12 @@ import os
 import csv
 import numpy as np
 from collections import Counter
+
+# Set variabel lingkungan sebelum meng-import tinygrad
+# Memaksa tinygrad menggunakan CPU/Python tanpa memerlukan compiler clang
+os.environ["CPU"] = "1"
+os.environ["CLANG"] = "0"
+
 from tinygrad.tensor import Tensor
 from tinygrad.nn.optim import Adam
 from tinygrad.nn.state import get_state_dict, load_state_dict, safe_save, safe_load
@@ -90,7 +96,6 @@ else:
 # 5. PROSES PELATIHAN (TRAINING LOOP)
 # ==========================================
 if not skip_training:
-    # PERBAIKAN: Aktifkan mode training global di tinygrad sebelum optimizer
     Tensor.training = True
 
     optimizer = Adam([model.w1, model.b1, model.w2, model.b2], lr=0.01)
@@ -120,7 +125,6 @@ if not skip_training:
     safe_save(state_dict, MODEL_PATH)
     print(f"\n-> Bobot model berhasil disimpan ke: '{MODEL_PATH}'")
 
-# PERBAIKAN: Matikan mode training saat hendak melakukan evaluasi/prediksi
 Tensor.training = False
 
 # ==========================================
