@@ -90,6 +90,9 @@ else:
 # 5. PROSES PELATIHAN (TRAINING LOOP)
 # ==========================================
 if not skip_training:
+    # PERBAIKAN: Aktifkan mode training global di tinygrad sebelum optimizer
+    Tensor.training = True
+
     optimizer = Adam([model.w1, model.b1, model.w2, model.b2], lr=0.01)
     EPOCHS = 100
     BATCH_SIZE = 16
@@ -116,6 +119,9 @@ if not skip_training:
     state_dict = get_state_dict(model)
     safe_save(state_dict, MODEL_PATH)
     print(f"\n-> Bobot model berhasil disimpan ke: '{MODEL_PATH}'")
+
+# PERBAIKAN: Matikan mode training saat hendak melakukan evaluasi/prediksi
+Tensor.training = False
 
 # ==========================================
 # 6. ANALISIS FREKUENSI HISTORIS & PREDIKSI
