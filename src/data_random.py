@@ -4,8 +4,9 @@ import random
 
 def generate_sample_data():
     # 1. Minta input dari user berapa jumlah baris data yang ingin dibuat
-    try harvest := input("Masukkan jumlah baris data yang ingin dibuat (contoh: 100): "):
-        num_rows = int(harvest)
+    try:
+        user_input = input("Masukkan jumlah baris data yang ingin dibuat (contoh: 100): ")
+        num_rows = int(user_input)
     except ValueError:
         print("Input tidak valid! Harap masukkan angka bulat.")
         return
